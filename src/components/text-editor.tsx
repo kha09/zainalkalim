@@ -121,7 +121,7 @@ export const TextEditor = forwardRef<TextEditorRef, TextEditorProps>(
     try {
       setIsSynonymLoading(true);
       const response = await watsonApi.generateSynonyms(selectedText);
-      const synonyms = response.results[0].generated_text;
+      const synonyms = response.choices[0].message.content;
       console.log('Generated synonyms:', synonyms);
       onSynonymsGenerated(synonyms);
       

@@ -13,13 +13,15 @@ export interface ErrorItem {
 
 export type WatsonResponse = ErrorItem[];
 
-interface WatsonGeneratedText {
-  results: Array<{
-    generated_text: string;
+interface OpenAIResponse {
+  choices: Array<{
+    message: {
+      content: string;
+    };
   }>;
 }
 
-export class IBMWatsonAPI {
+export class TextAnalysisAPI {
   async generateText(prompt: string): Promise<WatsonResponse> {
     const response = await fetch('/api/watson', {
       method: 'POST',
@@ -35,7 +37,7 @@ export class IBMWatsonAPI {
     }
 
     const data = await response.json();
-    const text = data.results[0].generated_text;
+    const text = data.choices[0].message.content;
     
     try {
       // First try to parse as is - it might already be valid JSON
@@ -70,7 +72,7 @@ export class IBMWatsonAPI {
     }
   }
 
-  async generateSynonyms(text: string): Promise<WatsonGeneratedText> {
+  async generateSynonyms(text: string): Promise<OpenAIResponse> {
     const response = await fetch('/api/watson/synonyms', {
       method: 'POST',
       headers: {
@@ -90,7 +92,7 @@ export class IBMWatsonAPI {
   }
 }
 
-export const watsonApi = new IBMWatsonAPI();
+export const watsonApi = new TextAnalysisAPI();
 
 // Export environment variables
 export const PARA_PROMPT = process.env.NEXT_PUBLIC_PARA_PROMPT || 'أعد صياغة الجملة التالية بخمس طرق غير متشابهة واجعل كل جملة في سطر جديد :';
