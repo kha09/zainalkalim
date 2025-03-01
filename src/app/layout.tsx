@@ -18,7 +18,7 @@ export default function RootLayout({
           <div className="container mx-auto px-4 py-3 flex justify-between items-center">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <h1 className="text-2xl font-bold text-purple-600">زين الكلم</h1>
+                <h1 className="text-2xl font-bold text-purple-600">زينُ الكلم</h1>
               </Link>
             </div>
           </div>
