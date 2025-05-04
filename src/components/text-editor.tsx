@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { Copy, Wand2 } from 'lucide-react'
 import { Button } from "./ui/button"
 import { watsonApi, WatsonResponse, ErrorItem } from '@/lib/watson-api'
-import { ErrorDisplay } from './error-display'
 
 interface ErrorInfo {
   word: string;
@@ -34,7 +33,6 @@ export const TextEditor = forwardRef<TextEditorRef, TextEditorProps>(
   const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [currentErrors, setCurrentErrors] = useState<ErrorItem[]>([])
   const [selectedText, setSelectedText] = useState("")
   const [isSynonymLoading, setIsSynonymLoading] = useState(false)
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -61,7 +59,6 @@ export const TextEditor = forwardRef<TextEditorRef, TextEditorProps>(
 
   const handleCorrectAll = (corrections: Array<{ errorWord: string, correction: string }>) => {
     if (editorRef.current) {
-      let content = editorRef.current.innerHTML;
       corrections.forEach(({ errorWord, correction }) => {
         const errorSpan = editorRef.current?.querySelector(`[data-word="${errorWord}"]`);
         if (errorSpan) {
@@ -272,7 +269,6 @@ export const TextEditor = forwardRef<TextEditorRef, TextEditorProps>(
       const errors = await watsonApi.generateText(userInput)
       console.log('API Response:', errors);
       
-      setCurrentErrors(errors);
       onErrorsFound(errors); // Pass errors to parent component
       
       const displayText = markErrorsInText(userInput, errors);
@@ -309,7 +305,6 @@ export const TextEditor = forwardRef<TextEditorRef, TextEditorProps>(
             const newText = e.currentTarget.textContent || '';
             console.log('New user input:', newText);
             setUserInput(newText);
-            setCurrentErrors([]);
             onErrorsFound([]); // Clear errors in parent when input changes
           }}
           onMouseUp={handleTextSelection}

@@ -42,13 +42,13 @@ export class TextAnalysisAPI {
     try {
       // First try to parse as is - it might already be valid JSON
       return JSON.parse(text);
-    } catch (e) {
+    } catch {
       // If not valid JSON, try to format it
       try {
         // Convert the text to proper JSON array format
         const formattedText = `[${text.replace(/}\s*,\s*{/g, '}, {').replace(/}(\s*){/g, '}, {')}]`;
         return JSON.parse(formattedText);
-      } catch (e2) {
+      } catch {
         // If still not valid, try to extract JSON objects
         const jsonObjects = [];
         const regex = /{[^{}]*}/g;
@@ -58,7 +58,7 @@ export class TextAnalysisAPI {
           try {
             const jsonObj = JSON.parse(match[0]);
             jsonObjects.push(jsonObj);
-          } catch (e3) {
+          } catch {
             console.error('Failed to parse JSON object:', match[0]);
           }
         }

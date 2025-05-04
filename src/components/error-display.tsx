@@ -2,7 +2,7 @@
 
 import { Card, CardHeader, CardContent } from "./ui/card"
 import { Button } from "./ui/button"
-import { type WatsonResponse } from "@/lib/watson-api"
+import { type WatsonResponse, type ErrorItem } from "@/lib/watson-api"
 
 interface ErrorDisplayProps {
   corrections: WatsonResponse;
@@ -26,9 +26,9 @@ export function ErrorDisplay({
     .filter(line => line.trim() !== '')
     .map(line => line.replace(/^[\d\s.،؛:-]+\s*/, '').trim()) || [];
 
-  const getErrorWord = (error: any) => error["خطأ"] || error["الكلمة_الخاطئة"] || error["الكلمة الخاطئة"] || "";
-  const getErrorType = (error: any) => error["نوع_الخطأ"] || error["نوع الخطأ"] || "";
-  const getErrorCorrection = (error: any) => error["تصحيح_الكلمة"] || error["تصحيح الكلمة"] || "";
+  const getErrorWord = (error: ErrorItem) => error["خطأ"] || error["الكلمة_الخاطئة"] || error["الكلمة الخاطئة"] || "";
+  const getErrorType = (error: ErrorItem) => error["نوع_الخطأ"] || error["نوع الخطأ"] || "";
+  const getErrorCorrection = (error: ErrorItem) => error["تصحيح_الكلمة"] || error["تصحيح الكلمة"] || "";
 
   const handleCorrection = (errorWord: string, correction: string) => {
     if (onCorrection) {

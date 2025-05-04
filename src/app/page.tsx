@@ -2,7 +2,7 @@
 
 import { TextEditor, type TextEditorRef } from "@/components/text-editor"
 import { ErrorDisplay } from "@/components/error-display"
-import { watsonApi, type WatsonResponse } from "@/lib/watson-api"
+import { type WatsonResponse } from "@/lib/watson-api"
 import { useState, useRef } from "react"
 
 export default function Home() {
